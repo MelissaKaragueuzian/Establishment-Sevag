@@ -1,0 +1,329 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="34%" r="72%">
+    <stop offset="0%" stop-color="#6a4a30"/>
+    <stop offset="42%" stop-color="#2c1f16"/>
+    <stop offset="100%" stop-color="#100e0c"/>
+  </radialGradient>
+  <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#f7ecd8"/>
+    <stop offset="40%" stop-color="#d4b07a"/>
+    <stop offset="68%" stop-color="#8a5a32"/>
+    <stop offset="100%" stop-color="#f3ddb8"/>
+  </linearGradient>
+  <linearGradient id="crystal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#fffaf3"/>
+    <stop offset="100%" stop-color="#c9dbe3" stop-opacity="0.45"/>
+  </linearGradient>
+  <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="14"/>
+  </filter>
+  <filter id="grain">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+  </filter>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<rect width="800" height="1000" filter="url(#grain)" opacity="0.28"/>
+<rect x="40" y="40" width="720" height="920" fill="none" stroke="#e7d3ae" stroke-opacity="0.28"/>
+<path d="M120 80 H250 V920" fill="none" stroke="#e7d3ae" stroke-opacity="0.25"/>
+<path d="M680 80 H550 V920" fill="none" stroke="#e7d3ae" stroke-opacity="0.25"/>
+<line x1="400" y1="60" x2="400" y2="900" stroke="url(#metal)" stroke-width="3"/>
+<ellipse cx="400" cy="280" rx="76" ry="150" fill="#e7b56a" opacity="0.16" filter="url(#soft)"/>
+<line x1="400" y1="60" x2="400" y2="148" stroke="#e7d3ae" stroke-width="1.4"/>
+<circle cx="400" cy="162" r="16" fill="url(#metal)"/>
+<path d="M366 178 H434" stroke="url(#metal)" stroke-width="3" stroke-linecap="round"/>
+<path d="M400 170 C 400 210, 360 100, 360 320" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="360" cy="338" r="5" fill="url(#metal)"/>
+<g transform="translate(360 346)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 170 C 400 210, 330 100, 330 290" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="330" cy="308" r="5" fill="url(#metal)"/>
+<g transform="translate(330 316)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 170 C 400 210, 310 100, 310 268" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="310" cy="286" r="5" fill="url(#metal)"/>
+<g transform="translate(310 294)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 170 C 400 210, 440 100, 440 320" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="440" cy="338" r="5" fill="url(#metal)"/>
+<g transform="translate(440 346)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 170 C 400 210, 470 100, 470 290" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="470" cy="308" r="5" fill="url(#metal)"/>
+<g transform="translate(470 316)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 170 C 400 210, 490 100, 490 268" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="490" cy="286" r="5" fill="url(#metal)"/>
+<g transform="translate(490 294)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 250)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 278)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 306)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 334)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 362)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g> <ellipse cx="400" cy="420" rx="76" ry="150" fill="#e7b56a" opacity="0.16" filter="url(#soft)"/>
+<line x1="400" y1="200" x2="400" y2="288" stroke="#e7d3ae" stroke-width="1.4"/>
+<circle cx="400" cy="302" r="16" fill="url(#metal)"/>
+<path d="M366 318 H434" stroke="url(#metal)" stroke-width="3" stroke-linecap="round"/>
+<path d="M400 310 C 400 350, 360 240, 360 460" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="360" cy="478" r="5" fill="url(#metal)"/>
+<g transform="translate(360 486)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 310 C 400 350, 330 240, 330 430" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="330" cy="448" r="5" fill="url(#metal)"/>
+<g transform="translate(330 456)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 310 C 400 350, 310 240, 310 408" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="310" cy="426" r="5" fill="url(#metal)"/>
+<g transform="translate(310 434)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 310 C 400 350, 440 240, 440 460" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="440" cy="478" r="5" fill="url(#metal)"/>
+<g transform="translate(440 486)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 310 C 400 350, 470 240, 470 430" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="470" cy="448" r="5" fill="url(#metal)"/>
+<g transform="translate(470 456)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 310 C 400 350, 490 240, 490 408" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="490" cy="426" r="5" fill="url(#metal)"/>
+<g transform="translate(490 434)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 390)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 418)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 446)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 474)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 502)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g> <ellipse cx="400" cy="560" rx="76" ry="150" fill="#e7b56a" opacity="0.16" filter="url(#soft)"/>
+<line x1="400" y1="340" x2="400" y2="428" stroke="#e7d3ae" stroke-width="1.4"/>
+<circle cx="400" cy="442" r="16" fill="url(#metal)"/>
+<path d="M366 458 H434" stroke="url(#metal)" stroke-width="3" stroke-linecap="round"/>
+<path d="M400 450 C 400 490, 360 380, 360 600" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="360" cy="618" r="5" fill="url(#metal)"/>
+<g transform="translate(360 626)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 450 C 400 490, 330 380, 330 570" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="330" cy="588" r="5" fill="url(#metal)"/>
+<g transform="translate(330 596)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 450 C 400 490, 310 380, 310 548" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="310" cy="566" r="5" fill="url(#metal)"/>
+<g transform="translate(310 574)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 450 C 400 490, 440 380, 440 600" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="440" cy="618" r="5" fill="url(#metal)"/>
+<g transform="translate(440 626)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 450 C 400 490, 470 380, 470 570" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="470" cy="588" r="5" fill="url(#metal)"/>
+<g transform="translate(470 596)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 450 C 400 490, 490 380, 490 548" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="490" cy="566" r="5" fill="url(#metal)"/>
+<g transform="translate(490 574)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 530)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 558)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 586)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 614)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 642)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g> <ellipse cx="400" cy="700" rx="76" ry="150" fill="#e7b56a" opacity="0.16" filter="url(#soft)"/>
+<line x1="400" y1="480" x2="400" y2="568" stroke="#e7d3ae" stroke-width="1.4"/>
+<circle cx="400" cy="582" r="16" fill="url(#metal)"/>
+<path d="M366 598 H434" stroke="url(#metal)" stroke-width="3" stroke-linecap="round"/>
+<path d="M400 590 C 400 630, 360 520, 360 740" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="360" cy="758" r="5" fill="url(#metal)"/>
+<g transform="translate(360 766)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 590 C 400 630, 330 520, 330 710" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="330" cy="728" r="5" fill="url(#metal)"/>
+<g transform="translate(330 736)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 590 C 400 630, 310 520, 310 688" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="310" cy="706" r="5" fill="url(#metal)"/>
+<g transform="translate(310 714)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 590 C 400 630, 440 520, 440 740" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="440" cy="758" r="5" fill="url(#metal)"/>
+<g transform="translate(440 766)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 590 C 400 630, 470 520, 470 710" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="470" cy="728" r="5" fill="url(#metal)"/>
+<g transform="translate(470 736)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 590 C 400 630, 490 520, 490 688" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="490" cy="706" r="5" fill="url(#metal)"/>
+<g transform="translate(490 714)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 670)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 698)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 726)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 754)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 782)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g> <ellipse cx="400" cy="840" rx="76" ry="150" fill="#e7b56a" opacity="0.16" filter="url(#soft)"/>
+<line x1="400" y1="620" x2="400" y2="708" stroke="#e7d3ae" stroke-width="1.4"/>
+<circle cx="400" cy="722" r="16" fill="url(#metal)"/>
+<path d="M366 738 H434" stroke="url(#metal)" stroke-width="3" stroke-linecap="round"/>
+<path d="M400 730 C 400 770, 360 660, 360 880" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="360" cy="898" r="5" fill="url(#metal)"/>
+<g transform="translate(360 906)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 730 C 400 770, 330 660, 330 850" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="330" cy="868" r="5" fill="url(#metal)"/>
+<g transform="translate(330 876)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 730 C 400 770, 310 660, 310 828" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="310" cy="846" r="5" fill="url(#metal)"/>
+<g transform="translate(310 854)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 730 C 400 770, 440 660, 440 880" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="440" cy="898" r="5" fill="url(#metal)"/>
+<g transform="translate(440 906)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 730 C 400 770, 470 660, 470 850" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="470" cy="868" r="5" fill="url(#metal)"/>
+<g transform="translate(470 876)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 730 C 400 770, 490 660, 490 828" fill="none" stroke="url(#metal)" stroke-width="3.2" stroke-linecap="round"/>
+<circle cx="490" cy="846" r="5" fill="url(#metal)"/>
+<g transform="translate(490 854)">
+  <path d="M0 0 L7 14 L0 22.4 L-7 14 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 22.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 810)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 838)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 866)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 894)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 922)">
+  <path d="M0 0 L6 12 L0 19.2 L-6 12 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 19.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+</svg>

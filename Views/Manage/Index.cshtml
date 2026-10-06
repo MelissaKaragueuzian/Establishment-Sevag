@@ -1,0 +1,38 @@
+@model DashboardViewModel
+@{
+    Layout = "_ManageLayout";
+}
+<div class="page-head">
+    <div>
+        <p class="kicker">Private</p>
+        <h1>Overview</h1>
+    </div>
+</div>
+<p class="lede">Changes appear on the public website as soon as you save them.</p>
+<div class="manage-grid">
+    <a class="manage-card" asp-action="Products">
+        <span>Products</span>
+        <strong>@Model.ProductCount</strong>
+        <em>Add, edit, and remove pieces</em>
+    </a>
+    <a class="manage-card" asp-action="Gallery">
+        <span>Gallery</span>
+        <strong>@Model.GalleryCount</strong>
+        <em>Upload photographs of finished work</em>
+    </a>
+    <a class="manage-card" asp-action="HomePage">
+        <span>Home page</span>
+        <strong class="manage-name">Hero</strong>
+        <em>Title, text, and the featured photo</em>
+    </a>
+    <a class="manage-card" asp-action="AboutPage">
+        <span>About page</span>
+        <strong class="manage-name">Our story</strong>
+        <em>How it started and how the work is made</em>
+    </a>
+    <a class="manage-card" asp-action="Company">
+        <span>Company</span>
+        <strong class="manage-name">@Model.CompanyName</strong>
+        <em>Name, contact details, and about text</em>
+    </a>
+</div>

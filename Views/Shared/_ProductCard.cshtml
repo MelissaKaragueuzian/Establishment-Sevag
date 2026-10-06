@@ -1,0 +1,40 @@
+@model Product
+@{
+    var image = Model.Images.OrderBy(i => i.Id).FirstOrDefault();
+    var label = ViewData["CardLabel"] as string;
+    var hasDimensions = !string.IsNullOrWhiteSpace(Model.Dimensions);
+}
+<a class="collection-card" asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id">
+    <div class="collection-media">
+        @if (image is null)
+        {
+            <div class="photo-fallback"><span>@Model.Category</span></div>
+        }
+        else
+        {
+            <img src="@image.ImagePath" alt="@Model.Name" loading="lazy" />
+        }
+        @if (!string.IsNullOrWhiteSpace(Model.Material))
+        {
+            <span class="collection-tag">@Model.Material</span>
+        }
+        @if (label is not null || hasDimensions)
+        {
+            <span class="collection-foot">
+                <span>@label</span>
+                @if (hasDimensions)
+                {
+                    <span>@Model.Dimensions</span>
+                }
+            </span>
+        }
+    </div>
+    <div class="collection-body">
+        <h3>@Model.Name</h3>
+        <p>@Model.Description</p>
+        <span class="collection-meta">
+            <span>@Model.Category</span>
+            <span class="collection-cta">View piece <span aria-hidden="true">→</span></span>
+        </span>
+    </div>
+</a>

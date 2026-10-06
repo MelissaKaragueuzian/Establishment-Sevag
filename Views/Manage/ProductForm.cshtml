@@ -1,0 +1,77 @@
+@model ProductFormViewModel
+@{
+    Layout = "_ManageLayout";
+    var heading = Model.Id is null ? "Add a product" : "Edit product";
+    var categories = ViewData["Categories"] as List<string> ?? [];
+}
+<div class="page-head">
+    <div>
+        <p class="kicker">Showroom</p>
+        <h1>@heading</h1>
+    </div>
+    <a class="text-link" asp-action="Products">Back to products</a>
+</div>
+<form class="form-card" method="post" enctype="multipart/form-data" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly" class="form-errors"></div>
+    <div class="field">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+        <span asp-validation-for="Name" class="field-error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="Category"></label>
+        <select asp-for="Category">
+            @foreach (var category in categories)
+            {
+                <option value="@category">@category</option>
+            }
+        </select>
+        <span asp-validation-for="Category" class="field-error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" rows="7"></textarea>
+        <span asp-validation-for="Description" class="field-error"></span>
+    </div>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="Material"></label>
+            <input asp-for="Material" placeholder="Cast bronze, cut crystal" />
+            <span asp-validation-for="Material" class="field-error"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Dimensions"></label>
+            <input asp-for="Dimensions" placeholder="90 cm diameter" />
+            <span asp-validation-for="Dimensions" class="field-error"></span>
+        </div>
+    </div>
+    <label class="check">
+        <input asp-for="IsFeatured" />
+        <span>@Html.DisplayNameFor(m => m.IsFeatured)</span>
+    </label>
+    @if (Model.ExistingImages.Count > 0)
+    {
+        <fieldset class="field">
+            <legend>Current images</legend>
+            <ul class="image-edit-list">
+                @foreach (var image in Model.ExistingImages)
+                {
+                    <li>
+                        <img src="@image.ImagePath" alt="" />
+                        <label><input type="checkbox" name="RemoveImageIds" value="@image.Id" /> Remove</label>
+                    </li>
+                }
+            </ul>
+        </fieldset>
+    }
+    <div class="field">
+        <label for="NewImages">Images</label>
+        <input id="NewImages" name="NewImages" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple />
+        <p class="hint">JPG, PNG, WEBP, or GIF. You can select more than one. Up to 8 MB each.</p>
+        <span asp-validation-for="NewImages" class="field-error"></span>
+    </div>
+    <div class="btn-row">
+        <button class="btn btn-bronze" type="submit">Save product</button>
+        <a class="btn btn-ghost" asp-action="Products">Cancel</a>
+    </div>
+</form>

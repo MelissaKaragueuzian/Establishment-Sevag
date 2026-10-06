@@ -1,0 +1,38 @@
+@model ProductListViewModel
+@{
+    var categories = ViewData["Categories"] as List<string> ?? [];
+}
+<section class="page-band">
+    <div class="wrap">
+        <p class="kicker">The collection</p>
+        <h1>@(Model.Category ?? "Products")</h1>
+        <p class="lede">Browse the workshop. Prices and orders are arranged directly with the atelier.</p>
+        <div class="chips" aria-label="Categories">
+            <a class="chip @(Model.Category is null ? "is-active" : null)" asp-action="Index">All</a>
+            @foreach (var category in categories)
+            {
+                <a class="chip @(Model.Category == category ? "is-active" : null)"
+                   asp-action="Index"
+                   asp-route-category="@category">@category</a>
+            }
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="wrap">
+        <p class="muted count-line">@Model.Products.Count @(Model.Products.Count == 1 ? "piece" : "pieces")</p>
+        @if (Model.Products.Count == 0)
+        {
+            <p class="muted">No pieces in this category yet.</p>
+        }
+        else
+        {
+            <div class="collection-grid">
+                @foreach (var product in Model.Products)
+                {
+                    <partial name="_ProductCard" model="product" />
+                }
+            </div>
+        }
+    </div>
+</section>

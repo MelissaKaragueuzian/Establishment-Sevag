@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="34%" r="72%">
+    <stop offset="0%" stop-color="#6a4a30"/>
+    <stop offset="42%" stop-color="#2c1f16"/>
+    <stop offset="100%" stop-color="#100e0c"/>
+  </radialGradient>
+  <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#f7ecd8"/>
+    <stop offset="40%" stop-color="#d4b07a"/>
+    <stop offset="68%" stop-color="#8a5a32"/>
+    <stop offset="100%" stop-color="#f3ddb8"/>
+  </linearGradient>
+  <linearGradient id="crystal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#fffaf3"/>
+    <stop offset="100%" stop-color="#c9dbe3" stop-opacity="0.45"/>
+  </linearGradient>
+  <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="14"/>
+  </filter>
+  <filter id="grain">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+  </filter>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<rect width="800" height="1000" filter="url(#grain)" opacity="0.28"/>
+<rect x="40" y="40" width="720" height="920" fill="none" stroke="#e7d3ae" stroke-opacity="0.28"/>
+<ellipse cx="400" cy="520" rx="180" ry="200" fill="#f4efe6" opacity="0.08" filter="url(#soft)"/>
+<g transform="translate(400 280)">
+  <path d="M0 0 L26 52 L0 83.2 L-26 52 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 83.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(280 400)">
+  <path d="M0 0 L18 36 L0 57.6 L-18 36 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 57.6" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(530 390)">
+  <path d="M0 0 L16 32 L0 51.2 L-16 32 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 51.2" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(330 560)">
+  <path d="M0 0 L14 28 L0 44.8 L-14 28 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 44.8" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(490 590)">
+  <path d="M0 0 L18 36 L0 57.6 L-18 36 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 57.6" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<g transform="translate(400 680)">
+  <path d="M0 0 L12 24 L0 38.4 L-12 24 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 38.4" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<path d="M400 760 H520 L500 810 H300 L280 760 Z" fill="url(#metal)" opacity="0.9"/>
+</svg>

@@ -1,0 +1,127 @@
+@model HomeViewModel
+@{
+    var inquiry = $"Hello, I would like to inquire about a piece from {Model.Company.CompanyName}.";
+    var whatsAppUrl = ContactLinks.WhatsApp(Model.Company.WhatsApp, inquiry);
+    var spotlight = Model.Spotlight;
+    var features = Model.Company.HeroFeatureList;
+}
+<section class="home-hero">
+    <div class="wrap home-hero-grid">
+        <div class="home-hero-copy">
+            <p class="hero-pill">@Model.Company.HeroBadgeOrDefault</p>
+            <h1>@Model.Company.HeroTitleOrDefault <em>@Model.Company.HeroHighlightOrDefault</em></h1>
+            <p class="hero-text">@Model.Company.HeroTextOrDefault</p>
+            <div class="hero-actions">
+                <a class="btn btn-square btn-dark" asp-controller="Products" asp-action="Index">
+                    Explore our collection <span aria-hidden="true">↗</span>
+                </a>
+                <a class="btn btn-square btn-outline" asp-controller="Contact" asp-action="Index">Contact us</a>
+            </div>
+            @if (features.Count > 0)
+            {
+                <ul class="hero-features" aria-label="What we make">
+                    @foreach (var feature in features)
+                    {
+                        <li>@feature</li>
+                    }
+                </ul>
+            }
+        </div>
+
+        <figure class="showcase">
+            <div class="showcase-frame">
+                <img src="@(Model.HeroImage ?? Url.Content("~/images/seed/hero.svg"))"
+                     alt="@(spotlight?.Name ?? "A bronze and crystal chandelier")"
+                     fetchpriority="high" />
+                <p class="showcase-badge"><small>Atelier</small>@Model.Company.CompanyName</p>
+                @if (spotlight is not null)
+                {
+                    <a class="showcase-card" asp-controller="Products" asp-action="Details" asp-route-id="@spotlight.Id">
+                        <span class="showcase-meta">
+                            <span>@spotlight.Category</span>
+                            <span class="showcase-tag">Featured piece</span>
+                        </span>
+                        <span class="showcase-title">@spotlight.Name</span>
+                        <span class="showcase-text">@spotlight.Description</span>
+                    </a>
+                }
+            </div>
+        </figure>
+    </div>
+</section>
+
+<section class="section collections">
+    <div class="wrap">
+        <div class="collections-head">
+            <div>
+                <p class="kicker">@Model.Company.CollectionKickerOrDefault</p>
+                <h2>@Model.Company.CollectionTitleOrDefault</h2>
+                <p class="lede">@Model.Company.CollectionTextOrDefault</p>
+            </div>
+            <a class="collections-link" asp-controller="Products" asp-action="Index">All products</a>
+        </div>
+        @if (Model.Featured.Count == 0)
+        {
+            <p class="muted">The collection will appear here once pieces are added.</p>
+        }
+        else
+        {
+            <div class="collection-grid">
+                @for (var i = 0; i < Model.Featured.Count; i++)
+                {
+                    <partial name="_ProductCard"
+                             model="Model.Featured[i]"
+                             view-data='new ViewDataDictionary(ViewData) { ["CardLabel"] = $"Collection {Roman(i + 1)}" }' />
+                }
+            </div>
+        }
+    </div>
+</section>
+
+@functions {
+    private static string Roman(int number)
+    {
+        var values = new[] { 10, 9, 5, 4, 1 };
+        var symbols = new[] { "X", "IX", "V", "IV", "I" };
+        var result = new System.Text.StringBuilder();
+        for (var i = 0; i < values.Length; i++)
+        {
+            while (number >= values[i])
+            {
+                result.Append(symbols[i]);
+                number -= values[i];
+            }
+        }
+        return result.ToString();
+    }
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Company.AboutDescription))
+{
+    <section class="section">
+        <div class="wrap split">
+            <div>
+                <p class="kicker">About Us</p>
+                <h2>Made in the workshop</h2>
+            </div>
+            <div>
+                <p class="lead">@Model.Company.Excerpt(360)</p>
+                <a class="text-link" asp-controller="About" asp-action="Index">About Us</a>
+            </div>
+        </div>
+    </section>
+}
+
+<section class="close-band">
+    <div class="wrap">
+        <p class="kicker">Commissions</p>
+        <h2>Tell us about the room.</h2>
+        <div class="btn-row">
+            @if (whatsAppUrl is not null)
+            {
+                <a class="btn btn-gold" href="@whatsAppUrl" target="_blank" rel="noopener noreferrer">Message on WhatsApp <span aria-hidden="true">↗</span></a>
+            }
+            <a class="btn btn-light" asp-controller="Contact" asp-action="Index">Contact us</a>
+        </div>
+    </div>
+</section>

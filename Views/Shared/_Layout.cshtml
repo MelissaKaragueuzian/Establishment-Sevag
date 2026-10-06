@@ -1,0 +1,126 @@
+@{
+    var company = ViewData["Company"] as CompanyInfo ?? CompanyInfo.CreateDefault();
+    var title = ViewData["Title"] as string;
+    var pageTitle = string.IsNullOrWhiteSpace(title) ? company.CompanyName : $"{title} · {company.CompanyName}";
+    var description = string.IsNullOrWhiteSpace(company.AboutDescription)
+        ? $"{company.CompanyName} makes chandeliers, bronze, crystal, and decorative pieces."
+        : company.Excerpt(160);
+    var inquiry = $"Hello, I would like to inquire about a piece from {company.CompanyName}.";
+    var whatsAppUrl = ContactLinks.WhatsApp(company.WhatsApp, inquiry);
+    var phoneUrl = ContactLinks.Phone(company.Phone);
+    var mapsUrl = ContactLinks.OpenMaps(company);
+    var current = ViewContext.RouteData.Values["controller"]?.ToString();
+    var links = new (string Label, string Controller)[]
+    {
+        ("Home", "Home"),
+        ("Products", "Products"),
+        ("Gallery", "Gallery"),
+        ("About Us", "About"),
+        ("Location", "Location"),
+        ("Contact", "Contact")
+    };
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="@description" />
+    <meta name="theme-color" content="#f6f1e8" />
+    <title>@pageTitle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="icon" href="~/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+        <a class="brand" asp-controller="Home" asp-action="Index">
+            <span class="brand-name">@company.CompanyName</span>
+            <span class="brand-tagline">Chandeliers · Bronze · Crystal</span>
+        </a>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="site-nav">Menu</button>
+        <nav id="site-nav" class="site-nav" data-nav>
+            @foreach (var link in links)
+            {
+                var active = string.Equals(current, link.Controller, StringComparison.OrdinalIgnoreCase);
+                <a class="@(active ? "is-active" : null)"
+                   aria-current="@(active ? "page" : null)"
+                   asp-controller="@link.Controller"
+                   asp-action="Index">@link.Label</a>
+            }
+            @if (whatsAppUrl is not null)
+            {
+                <a class="btn btn-dark btn-small" href="@whatsAppUrl" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            }
+        </nav>
+    </header>
+    <main id="content">
+        @RenderBody()
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-grid">
+            <div>
+                <p class="footer-brand">@company.CompanyName</p>
+                <p class="footer-tagline">Chandeliers · Bronze · Crystal</p>
+                <p class="footer-note">@(string.IsNullOrWhiteSpace(company.AboutDescription) ? "Bronze, crystal, chandeliers, and decorative pieces." : company.Excerpt(140))</p>
+            </div>
+            <nav class="footer-nav" aria-label="Footer">
+                <p class="footer-heading">Explore</p>
+                @foreach (var link in links)
+                {
+                    <a asp-controller="@link.Controller" asp-action="Index">@link.Label</a>
+                }
+            </nav>
+            <div class="footer-contact">
+                <p class="footer-heading">Contact</p>
+                @if (phoneUrl is not null)
+                {
+                    <a href="@phoneUrl">@company.Phone</a>
+                }
+                @if (ContactLinks.Mail(company.Email) is string mail)
+                {
+                    <a href="@mail">@company.Email</a>
+                }
+                @if (!string.IsNullOrWhiteSpace(company.Address))
+                {
+                    @if (mapsUrl is not null)
+                    {
+                        <a href="@mapsUrl" target="_blank" rel="noopener noreferrer">@company.Address</a>
+                    }
+                    else
+                    {
+                        <p>@company.Address</p>
+                    }
+                }
+            </div>
+        </div>
+        <div class="wrap footer-base">
+            <p>© @DateTime.Now.Year @company.CompanyName</p>
+        </div>
+    </footer>
+    @if (phoneUrl is not null || whatsAppUrl is not null)
+    {
+        <div class="mobile-bar">
+            @if (phoneUrl is not null)
+            {
+                <a href="@phoneUrl">Call</a>
+            }
+            @if (whatsAppUrl is not null)
+            {
+                <a class="primary" href="@whatsAppUrl" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+            }
+        </div>
+    }
+    <div class="lightbox" data-lightbox-root hidden role="dialog" aria-modal="true" aria-label="Photograph">
+        <button type="button" class="lightbox-close" data-lightbox-close>Close</button>
+        <figure>
+            <img alt="" />
+            <figcaption data-lightbox-caption></figcaption>
+        </figure>
+    </div>
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+</body>
+</html>

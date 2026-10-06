@@ -1,0 +1,53 @@
+@model CompanyInfo
+@{
+    var mapsUrl = ContactLinks.OpenMaps(Model);
+    var embedUrl = ContactLinks.EmbedMaps(Model);
+    var phoneUrl = ContactLinks.Phone(Model.Phone);
+    var whatsAppUrl = ContactLinks.WhatsApp(Model.WhatsApp, $"Hello, I would like to visit {Model.CompanyName}.");
+}
+<section class="page-band">
+    <div class="wrap">
+        <p class="kicker">Visit the workshop</p>
+        <h1>Location</h1>
+        <p class="lede">See the pieces in person. Call or send a note on WhatsApp before you come, so the workshop is ready for you.</p>
+    </div>
+</section>
+<section class="section">
+    <div class="wrap location-layout">
+        <div>
+            <p class="kicker">Address</p>
+            @if (!string.IsNullOrWhiteSpace(Model.Address))
+            {
+                <p class="address">@Model.Address</p>
+            }
+            else
+            {
+                <p class="lede">The address will appear here once it is added in the management page.</p>
+            }
+            <div class="btn-row">
+                @if (mapsUrl is not null)
+                {
+                    <a class="btn btn-dark" href="@mapsUrl" target="_blank" rel="noopener noreferrer">Open in Google Maps <span aria-hidden="true">↗</span></a>
+                }
+                @if (whatsAppUrl is not null)
+                {
+                    <a class="btn btn-outline" href="@whatsAppUrl" target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                }
+                @if (phoneUrl is not null)
+                {
+                    <a class="btn btn-outline" href="@phoneUrl">Call</a>
+                }
+            </div>
+        </div>
+        @if (embedUrl is not null)
+        {
+            <div class="map-mat">
+                <iframe class="map-frame"
+                        title="Map showing @Model.Address"
+                        src="@embedUrl"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        }
+    </div>
+</section>

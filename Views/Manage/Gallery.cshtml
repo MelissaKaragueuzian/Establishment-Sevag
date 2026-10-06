@@ -1,0 +1,126 @@
+@model GalleryUploadViewModel
+@{
+    Layout = "_ManageLayout";
+    var images = ViewBag.Images as IReadOnlyList<GalleryImage> ?? [];
+    var usage = ViewBag.CategoryUsage as IReadOnlyList<CategoryUsage> ?? [];
+    var hasGeneral = images.Any(i => string.IsNullOrEmpty(i.Category));
+}
+<div class="page-head">
+    <div>
+        <p class="kicker">Photographs</p>
+        <h1>Gallery</h1>
+        <p class="muted">@images.Count @(images.Count == 1 ? "photograph" : "photographs") · @usage.Count @(usage.Count == 1 ? "category" : "categories")</p>
+    </div>
+</div>
+
+<div class="manage-split">
+    <section class="form-card">
+        <h2>Add a photograph</h2>
+        <form method="post" enctype="multipart/form-data" asp-action="Gallery" asp-antiforgery="true">
+            <div asp-validation-summary="ModelOnly" class="form-errors"></div>
+            <div class="field">
+                <label for="Image">Image</label>
+                <input id="Image" name="Image" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+                <p class="hint">JPG, PNG, WEBP, or GIF. Up to 8 MB.</p>
+                <span asp-validation-for="Image" class="field-error"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Title"></label>
+                <input asp-for="Title" placeholder="Evening hall" />
+                <span asp-validation-for="Title" class="field-error"></span>
+            </div>
+            <div class="field">
+                <label asp-for="Category"></label>
+                <select asp-for="Category">
+                    <option value="">General</option>
+                    @foreach (var category in usage)
+                    {
+                        <option value="@category.Name">@category.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="Category" class="field-error"></span>
+            </div>
+            <button class="btn btn-bronze" type="submit">Upload photograph</button>
+        </form>
+    </section>
+
+    <section class="form-card">
+        <h2>Categories</h2>
+        <p class="hint">Shared by the gallery and the products. A category can be deleted once no product uses it.</p>
+        <form class="inline-form" method="post" asp-action="AddCategory" asp-antiforgery="true">
+            <label class="visually-hidden" for="new-category">New category</label>
+            <input id="new-category" name="name" type="text" maxlength="80" placeholder="New category, e.g. Wall Lights" required />
+            <button class="btn btn-bronze btn-small" type="submit">Add</button>
+        </form>
+        @if (usage.Count == 0)
+        {
+            <p class="muted">No categories yet.</p>
+        }
+        else
+        {
+            <ul class="category-list">
+                @foreach (var category in usage)
+                {
+                    var unused = category.ProductCount == 0 && category.PhotoCount == 0;
+                    var label = unused
+                        ? "Not used"
+                        : $"{category.ProductCount} {(category.ProductCount == 1 ? "product" : "products")} · {category.PhotoCount} {(category.PhotoCount == 1 ? "photo" : "photos")}";
+                    <li>
+                        <div>
+                            <strong>@category.Name</strong>
+                            <span class="@(unused ? "tag-unused" : "muted small")">@label</span>
+                        </div>
+                        @if (category.InUseByProducts)
+                        {
+                            <span class="muted small">In use</span>
+                        }
+                        else
+                        {
+                            <form method="post" asp-action="DeleteCategory" asp-route-id="@category.Id"
+                                  data-confirm="@(category.PhotoCount > 0 ? $"Delete \"{category.Name}\"? Its photographs will move to General." : $"Delete \"{category.Name}\"?")">
+                                <button type="submit" class="link-danger">Delete</button>
+                            </form>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+    </section>
+</div>
+
+<section class="manage-photos">
+    <h2>Photographs</h2>
+    @if (images.Count == 0)
+    {
+        <p class="muted">No photographs yet. Upload the first one above.</p>
+    }
+    else
+    {
+        <div class="chips">
+            <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All</button>
+            @foreach (var category in usage.Where(c => c.PhotoCount > 0))
+            {
+                <button type="button" class="chip" data-filter="@category.Name" aria-pressed="false">@category.Name (@category.PhotoCount)</button>
+            }
+            @if (hasGeneral)
+            {
+                <button type="button" class="chip" data-filter="" aria-pressed="false">General</button>
+            }
+        </div>
+        <div class="manage-gallery" data-gallery-grid>
+            @foreach (var image in images)
+            {
+                <article data-category="@(image.Category ?? "")">
+                    <img src="@image.ImagePath" alt="@(image.Title ?? "")" loading="lazy" />
+                    <div>
+                        <p class="manage-gallery-title">@(string.IsNullOrWhiteSpace(image.Title) ? "Untitled" : image.Title)</p>
+                        <p class="muted small">@(image.Category ?? "General")</p>
+                        <form method="post" asp-action="DeleteGalleryImage" asp-route-id="@image.Id" data-confirm="Remove this image from the gallery?">
+                            <button type="submit" class="link-danger">Delete</button>
+                        </form>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>

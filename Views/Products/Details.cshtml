@@ -1,0 +1,89 @@
+@model ProductDetailsViewModel
+@{
+    var images = Model.Product.Images.OrderBy(i => i.Id).ToList();
+    var main = images.FirstOrDefault();
+}
+<section class="section">
+    <div class="wrap detail">
+        <div class="detail-gallery" data-detail-gallery>
+            <div class="detail-mat">
+            <div class="frame detail-frame">
+                @if (main is null)
+                {
+                    <div class="photo-fallback"><span>@Model.Product.Category</span></div>
+                }
+                else
+                {
+                    <img class="detail-main" data-detail-main src="@main.ImagePath" alt="@Model.Product.Name" />
+                }
+            </div>
+            </div>
+            @if (images.Count > 1)
+            {
+                <div class="thumbs">
+                    @for (var i = 0; i < images.Count; i++)
+                    {
+                        <button type="button"
+                                class="@(i == 0 ? "is-active" : null)"
+                                data-src="@images[i].ImagePath"
+                                data-alt="@Model.Product.Name">
+                            <img src="@images[i].ImagePath" alt="" />
+                        </button>
+                    }
+                </div>
+            }
+        </div>
+        <div class="detail-info">
+            <p class="breadcrumb">
+                <a asp-action="Index">Products</a>
+                <span aria-hidden="true">/</span>
+                <a asp-action="Index" asp-route-category="@Model.Product.Category">@Model.Product.Category</a>
+            </p>
+            <p class="kicker">@Model.Product.Category</p>
+            <h1>@Model.Product.Name</h1>
+            <p class="prose description">@Model.Product.Description</p>
+            @if (!string.IsNullOrWhiteSpace(Model.Product.Material) || !string.IsNullOrWhiteSpace(Model.Product.Dimensions))
+            {
+                <dl class="spec-list">
+                    @if (!string.IsNullOrWhiteSpace(Model.Product.Material))
+                    {
+                        <dt>Material</dt>
+                        <dd>@Model.Product.Material</dd>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Product.Dimensions))
+                    {
+                        <dt>Dimensions</dt>
+                        <dd>@Model.Product.Dimensions</dd>
+                    }
+                </dl>
+            }
+            <div class="btn-row">
+                @if (Model.WhatsAppUrl is not null)
+                {
+                    <a class="btn btn-dark" href="@Model.WhatsAppUrl" target="_blank" rel="noopener noreferrer">Ask about this piece <span aria-hidden="true">↗</span></a>
+                }
+                <a class="btn btn-outline" asp-controller="Contact" asp-action="Index">Contact us</a>
+            </div>
+        </div>
+    </div>
+</section>
+@if (Model.Related.Count > 0)
+{
+    <section class="section collections">
+        <div class="wrap">
+            <div class="collections-head">
+                <div>
+                    <p class="kicker">Related</p>
+                    <h2>More @Model.Product.Category.ToLowerInvariant()</h2>
+                </div>
+                <a class="collections-link" asp-action="Index" asp-route-category="@Model.Product.Category">See all</a>
+            </div>
+            <div class="collection-grid">
+                @foreach (var product in Model.Related)
+                {
+                    <partial name="_ProductCard" model="product" />
+                }
+            </div>
+        </div>
+    </section>
+}

@@ -1,0 +1,96 @@
+@model HomePageFormViewModel
+@{
+    Layout = "_ManageLayout";
+    var products = ViewBag.Products as IReadOnlyList<ProductChoice> ?? [];
+}
+<div class="page-head">
+    <div>
+        <p class="kicker">Public site</p>
+        <h1>Home page</h1>
+    </div>
+    <a class="text-link" asp-controller="Home" asp-action="Index" target="_blank" rel="noopener">View the home page</a>
+</div>
+<p class="lede">The words and photo at the top of the home page. Leave a field empty to go back to the original text.</p>
+<form class="form-card" method="post" enctype="multipart/form-data" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly" class="form-errors"></div>
+
+    <h2>Text</h2>
+    <div class="field">
+        <label asp-for="HeroBadge"></label>
+        <input asp-for="HeroBadge" placeholder="@CompanyInfo.DefaultHeroBadge" />
+        <span asp-validation-for="HeroBadge" class="field-error"></span>
+    </div>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="HeroTitle"></label>
+            <input asp-for="HeroTitle" placeholder="@CompanyInfo.DefaultHeroTitle" />
+            <span asp-validation-for="HeroTitle" class="field-error"></span>
+        </div>
+        <div class="field">
+            <label asp-for="HeroHighlight"></label>
+            <input asp-for="HeroHighlight" placeholder="@CompanyInfo.DefaultHeroHighlight" />
+            <p class="hint">Shown after the title in gold italic.</p>
+            <span asp-validation-for="HeroHighlight" class="field-error"></span>
+        </div>
+    </div>
+    <div class="field">
+        <label asp-for="HeroText"></label>
+        <textarea asp-for="HeroText" rows="4"></textarea>
+        <span asp-validation-for="HeroText" class="field-error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="HeroFeatures"></label>
+        <textarea asp-for="HeroFeatures" rows="3"></textarea>
+        <p class="hint">One per line. Shown in small capitals under the buttons.</p>
+        <span asp-validation-for="HeroFeatures" class="field-error"></span>
+    </div>
+
+    <h2>Photo card</h2>
+    <div class="field">
+        <label asp-for="HeroProductId"></label>
+        <select asp-for="HeroProductId">
+            <option value="">Automatic: the first featured piece with a photo</option>
+            @foreach (var product in products)
+            {
+                <option value="@product.Id">@product.Name@(product.HasImage ? "" : " (no photo)")</option>
+            }
+        </select>
+        <p class="hint">Its name, category, and description appear on the dark card. Clicking the card opens the piece.</p>
+        <span asp-validation-for="HeroProductId" class="field-error"></span>
+    </div>
+    <div class="field">
+        <label for="HeroImage">Photo</label>
+        @if (Model.CurrentImagePath is not null)
+        {
+            <div class="hero-image-current">
+                <img src="@Model.CurrentImagePath" alt="Current home page photo" />
+                <label class="check"><input type="checkbox" asp-for="RemoveHeroImage" /> <span>Remove this photo and use the piece's own photo</span></label>
+            </div>
+        }
+        <input id="HeroImage" name="HeroImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+        <p class="hint">Optional. Without a photo here, the card uses the chosen piece's first photo. JPG, PNG, WEBP, or GIF, up to 8 MB.</p>
+        <span asp-validation-for="HeroImage" class="field-error"></span>
+    </div>
+
+    <h2>Collection section</h2>
+    <p class="hint">The cards below this heading are your featured products. Choose them with “Show on the home page” in Products. Each card uses the piece's material, dimensions, and category.</p>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="CollectionKicker"></label>
+            <input asp-for="CollectionKicker" placeholder="@CompanyInfo.DefaultCollectionKicker" />
+            <span asp-validation-for="CollectionKicker" class="field-error"></span>
+        </div>
+        <div class="field">
+            <label asp-for="CollectionTitle"></label>
+            <input asp-for="CollectionTitle" placeholder="@CompanyInfo.DefaultCollectionTitle" />
+            <span asp-validation-for="CollectionTitle" class="field-error"></span>
+        </div>
+    </div>
+    <div class="field">
+        <label asp-for="CollectionText"></label>
+        <textarea asp-for="CollectionText" rows="3"></textarea>
+        <span asp-validation-for="CollectionText" class="field-error"></span>
+    </div>
+
+    <button class="btn btn-bronze" type="submit">Save home page</button>
+</form>

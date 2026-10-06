@@ -1,0 +1,141 @@
+@model AboutPageFormViewModel
+@{
+    Layout = "_ManageLayout";
+}
+<div class="page-head">
+    <div>
+        <p class="kicker">Public site</p>
+        <h1>About page</h1>
+    </div>
+    <a class="text-link" asp-controller="About" asp-action="Index" target="_blank" rel="noopener">View the About page</a>
+</div>
+<p class="lede">The dark section that explains how the workshop started and how the work is made. Leave a field empty to hide it.</p>
+<form class="form-card" method="post" enctype="multipart/form-data" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly" class="form-errors"></div>
+
+    <h2>Story</h2>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="Content.Kicker"></label>
+            <input asp-for="Content.Kicker" />
+            <span asp-validation-for="Content.Kicker" class="field-error"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Content.Title"></label>
+            <input asp-for="Content.Title" />
+            <span asp-validation-for="Content.Title" class="field-error"></span>
+        </div>
+    </div>
+    <div class="field">
+        <label asp-for="Content.Intro"></label>
+        <textarea asp-for="Content.Intro" rows="5"></textarea>
+        <p class="hint">Who started the workshop, when, and how it grew. Line breaks are kept.</p>
+        <span asp-validation-for="Content.Intro" class="field-error"></span>
+    </div>
+
+    <h2>How the work is made</h2>
+    <p class="hint">Three steps, each with its own icon: bronze, crystal, and scale. Empty the title to hide a step.</p>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="Content.Step1Title"></label>
+            <input asp-for="Content.Step1Title" />
+            <span asp-validation-for="Content.Step1Title" class="field-error"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Content.Step1Text"></label>
+            <textarea asp-for="Content.Step1Text" rows="3"></textarea>
+            <span asp-validation-for="Content.Step1Text" class="field-error"></span>
+        </div>
+    </div>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="Content.Step2Title"></label>
+            <input asp-for="Content.Step2Title" />
+            <span asp-validation-for="Content.Step2Title" class="field-error"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Content.Step2Text"></label>
+            <textarea asp-for="Content.Step2Text" rows="3"></textarea>
+            <span asp-validation-for="Content.Step2Text" class="field-error"></span>
+        </div>
+    </div>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="Content.Step3Title"></label>
+            <input asp-for="Content.Step3Title" />
+            <span asp-validation-for="Content.Step3Title" class="field-error"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Content.Step3Text"></label>
+            <textarea asp-for="Content.Step3Text" rows="3"></textarea>
+            <span asp-validation-for="Content.Step3Text" class="field-error"></span>
+        </div>
+    </div>
+
+    <h2>Quote</h2>
+    <div class="field">
+        <label asp-for="Content.Quote"></label>
+        <textarea asp-for="Content.Quote" rows="2"></textarea>
+        <span asp-validation-for="Content.Quote" class="field-error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="Content.QuoteAuthor"></label>
+        <input asp-for="Content.QuoteAuthor" placeholder="Master artisan" />
+        <p class="hint">The company name is added after it automatically.</p>
+        <span asp-validation-for="Content.QuoteAuthor" class="field-error"></span>
+    </div>
+
+    <h2>Photos</h2>
+    <div class="field-row">
+        <div class="field">
+            <label for="Image1">First photo</label>
+            @if (Model.Content.Image1Path is not null)
+            {
+                <div class="hero-image-current">
+                    <img src="@Model.Content.Image1Path" alt="Current first photo" />
+                    <label class="check"><input type="checkbox" asp-for="RemoveImage1" /> <span>Remove</span></label>
+                </div>
+            }
+            <input id="Image1" name="Image1" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+            <span asp-validation-for="Image1" class="field-error"></span>
+            <label asp-for="Content.Image1Label"></label>
+            <input asp-for="Content.Image1Label" />
+        </div>
+        <div class="field">
+            <label for="Image2">Second photo</label>
+            @if (Model.Content.Image2Path is not null)
+            {
+                <div class="hero-image-current">
+                    <img src="@Model.Content.Image2Path" alt="Current second photo" />
+                    <label class="check"><input type="checkbox" asp-for="RemoveImage2" /> <span>Remove</span></label>
+                </div>
+            }
+            <input id="Image2" name="Image2" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />
+            <span asp-validation-for="Image2" class="field-error"></span>
+            <label asp-for="Content.Image2Label"></label>
+            <input asp-for="Content.Image2Label" />
+        </div>
+    </div>
+    <p class="hint">Tall photos look best, for example a craftsman at work and a close-up of crystal. JPG, PNG, WEBP, or GIF, up to 8 MB.</p>
+
+    <h2>Figures</h2>
+    <p class="hint">Two small cards next to the photos, for a number or short phrase and a line about it.</p>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="Content.Stat1Value"></label>
+            <input asp-for="Content.Stat1Value" />
+            <label asp-for="Content.Stat1Text"></label>
+            <textarea asp-for="Content.Stat1Text" rows="2"></textarea>
+            <span asp-validation-for="Content.Stat1Text" class="field-error"></span>
+        </div>
+        <div class="field">
+            <label asp-for="Content.Stat2Value"></label>
+            <input asp-for="Content.Stat2Value" />
+            <label asp-for="Content.Stat2Text"></label>
+            <textarea asp-for="Content.Stat2Text" rows="2"></textarea>
+            <span asp-validation-for="Content.Stat2Text" class="field-error"></span>
+        </div>
+    </div>
+
+    <button class="btn btn-bronze" type="submit">Save About page</button>
+</form>

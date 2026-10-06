@@ -1,0 +1,125 @@
+@model AboutViewModel
+@{
+    var about = Model.Page;
+    var steps = about.Steps().ToList();
+    var icons = new[]
+    {
+        "<path d=\"M14 4l6 6-3 3-6-6zM11 7l-8 8 3 3 8-8\" />",
+        "<path d=\"M12 3l7 6-7 12L5 9z\" /><path d=\"M5 9h14M12 3v18\" />",
+        "<path d=\"M4 21V8l8-5 8 5v13\" /><path d=\"M9 21v-6h6v6M4 21h16\" />"
+    };
+    var hasMedia = about.Image1Path is not null || about.Image2Path is not null
+        || about.Stat1Value is not null || about.Stat2Value is not null;
+}
+<section class="page-band">
+    <div class="wrap about-intro">
+        <div>
+            <p class="kicker">The atelier</p>
+            <h1>About Us</h1>
+            <div class="btn-row">
+                <a class="btn btn-dark" asp-controller="Products" asp-action="Index">Explore our collection <span aria-hidden="true">↗</span></a>
+                <a class="btn btn-outline" asp-controller="Location" asp-action="Index">Visit us</a>
+            </div>
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.Company.AboutDescription))
+        {
+            <p class="story">@Model.Company.AboutDescription</p>
+        }
+    </div>
+</section>
+
+<section class="craft">
+    <div class="wrap craft-layout @(hasMedia ? null : "craft-layout-single")">
+        <div class="craft-copy">
+            @if (about.Kicker is not null)
+            {
+                <p class="kicker">@about.Kicker</p>
+            }
+            @if (about.Title is not null)
+            {
+                <h2>@about.Title</h2>
+            }
+            @if (about.Intro is not null)
+            {
+                <p class="craft-intro">@about.Intro</p>
+            }
+            @if (steps.Count > 0)
+            {
+                <div class="craft-steps">
+                    @for (var i = 0; i < steps.Count; i++)
+                    {
+                        <article class="craft-step">
+                            <span class="craft-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">@Html.Raw(icons[i % icons.Length])</svg>
+                            </span>
+                            <div>
+                                <h3>@steps[i].Title</h3>
+                                @if (!string.IsNullOrWhiteSpace(steps[i].Text))
+                                {
+                                    <p>@steps[i].Text</p>
+                                }
+                            </div>
+                        </article>
+                    }
+                </div>
+            }
+            @if (about.Quote is not null)
+            {
+                <figure class="craft-quote">
+                    <blockquote>“@about.Quote”</blockquote>
+                    <figcaption>— @(about.QuoteAuthor is null ? Model.Company.CompanyName : $"{about.QuoteAuthor}, {Model.Company.CompanyName}")</figcaption>
+                </figure>
+            }
+        </div>
+
+        @if (hasMedia)
+        {
+            <div class="craft-mosaic">
+                <div class="craft-column">
+                    @if (about.Image1Path is not null)
+                    {
+                        <figure class="craft-photo">
+                            <img src="@about.Image1Path" alt="@(about.Image1Label ?? "In the workshop")" loading="lazy" />
+                            @if (about.Image1Label is not null)
+                            {
+                                <figcaption>@about.Image1Label</figcaption>
+                            }
+                        </figure>
+                    }
+                    @if (about.Stat2Value is not null)
+                    {
+                        <div class="craft-stat">
+                            <strong>@about.Stat2Value</strong>
+                            @if (about.Stat2Text is not null)
+                            {
+                                <p>@about.Stat2Text</p>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="craft-column craft-column-offset">
+                    @if (about.Stat1Value is not null)
+                    {
+                        <div class="craft-stat">
+                            <strong>@about.Stat1Value</strong>
+                            @if (about.Stat1Text is not null)
+                            {
+                                <p>@about.Stat1Text</p>
+                            }
+                        </div>
+                    }
+                    @if (about.Image2Path is not null)
+                    {
+                        <figure class="craft-photo">
+                            <img src="@about.Image2Path" alt="@(about.Image2Label ?? "Crystal detail")" loading="lazy" />
+                            @if (about.Image2Label is not null)
+                            {
+                                <figcaption>@about.Image2Label</figcaption>
+                            }
+                        </figure>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</section>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="34%" r="72%">
+    <stop offset="0%" stop-color="#6a4a30"/>
+    <stop offset="42%" stop-color="#2c1f16"/>
+    <stop offset="100%" stop-color="#100e0c"/>
+  </radialGradient>
+  <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0%" stop-color="#f7ecd8"/>
+    <stop offset="40%" stop-color="#d4b07a"/>
+    <stop offset="68%" stop-color="#8a5a32"/>
+    <stop offset="100%" stop-color="#f3ddb8"/>
+  </linearGradient>
+  <linearGradient id="crystal" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#fffaf3"/>
+    <stop offset="100%" stop-color="#c9dbe3" stop-opacity="0.45"/>
+  </linearGradient>
+  <filter id="soft" x="-40%" y="-40%" width="180%" height="180%">
+    <feGaussianBlur stdDeviation="14"/>
+  </filter>
+  <filter id="grain">
+    <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/>
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer><feFuncA type="linear" slope="0.18"/></feComponentTransfer>
+  </filter>
+</defs>
+<rect width="800" height="1000" fill="url(#bg)"/>
+<rect width="800" height="1000" filter="url(#grain)" opacity="0.28"/>
+<rect x="40" y="40" width="720" height="920" fill="none" stroke="#e7d3ae" stroke-opacity="0.28"/>
+<ellipse cx="470" cy="520" rx="140" ry="160" fill="#e7b56a" opacity="0.2" filter="url(#soft)"/>
+<path d="M250 390 C250 330 310 300 340 340 C370 300 430 330 430 400 C430 470 340 520 340 520 C340 520 250 470 250 390 Z" fill="url(#metal)"/>
+<path d="M340 500 C430 470 520 500 540 560" fill="none" stroke="url(#metal)" stroke-width="8" stroke-linecap="round"/>
+<circle cx="548" cy="572" r="10" fill="url(#metal)"/>
+<g transform="translate(548 590)">
+  <path d="M0 0 L8 16 L0 25.6 L-8 16 Z" fill="url(#crystal)" opacity="0.9"/>
+  <path d="M0 0 L0 25.6" stroke="#fff" stroke-opacity="0.55" stroke-width="0.6"/>
+</g>
+<rect x="230" y="300" width="18" height="280" rx="4" fill="#5c4030" opacity="0.55"/>
+</svg>

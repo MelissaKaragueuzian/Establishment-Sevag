@@ -1,0 +1,55 @@
+@model IReadOnlyList<GalleryImage>
+@{
+    var categories = (ViewData["Categories"] as List<string> ?? [])
+        .Where(c => Model.Any(i => i.Category == c))
+        .ToList();
+}
+<section class="page-band">
+    <div class="wrap">
+        <p class="kicker">Completed work</p>
+        <h1>Gallery</h1>
+        <p class="lede">Rooms, details, and pieces after they leave the workshop.</p>
+        @if (categories.Count > 0)
+        {
+            <div class="chips">
+                <button type="button" class="chip is-active" data-filter="all" aria-pressed="true">All</button>
+                @foreach (var category in categories)
+                {
+                    <button type="button" class="chip" data-filter="@category" aria-pressed="false">@category</button>
+                }
+            </div>
+        }
+    </div>
+</section>
+<section class="section">
+    <div class="wrap">
+        @if (Model.Count == 0)
+        {
+            <div class="empty-state">
+                <p class="kicker">Coming soon</p>
+                <h2>Photographs of finished rooms are on their way.</h2>
+                <p class="muted">In the meantime, browse the pieces in the collection.</p>
+                <a class="btn btn-dark" asp-controller="Products" asp-action="Index">Explore our collection <span aria-hidden="true">↗</span></a>
+            </div>
+        }
+        else
+        {
+            <div class="gallery-grid" data-gallery-grid>
+                @foreach (var image in Model)
+                {
+                    <a class="gallery-item"
+                       href="@image.ImagePath"
+                       data-lightbox
+                       data-title="@image.Title"
+                       data-category="@(image.Category ?? "")">
+                        <img src="@image.ImagePath" alt="@(image.Title ?? "Completed work")" loading="lazy" />
+                        @if (!string.IsNullOrWhiteSpace(image.Title))
+                        {
+                            <span>@image.Title</span>
+                        }
+                    </a>
+                }
+            </div>
+        }
+    </div>
+</section>

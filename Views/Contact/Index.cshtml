@@ -1,0 +1,70 @@
+@model CompanyInfo
+@{
+    var inquiry = $"Hello, I would like to inquire about a piece from {Model.CompanyName}.";
+    var whatsAppUrl = ContactLinks.WhatsApp(Model.WhatsApp, inquiry);
+    var phoneUrl = ContactLinks.Phone(Model.Phone);
+    var mailUrl = ContactLinks.Mail(Model.Email);
+    var mapsUrl = ContactLinks.OpenMaps(Model);
+}
+<section class="page-band">
+    <div class="wrap">
+        <p class="kicker">The atelier</p>
+        <h1>Contact</h1>
+        <p class="lede">Call, write, or send a note on WhatsApp. If you are asking about a piece, its name is enough to start.</p>
+    </div>
+</section>
+<section class="section">
+    <div class="wrap contact-layout">
+        <div>
+            <p class="kicker">Commissions</p>
+            <h2>Tell us about the room.</h2>
+            <p class="lede">The ceiling height, the style of the space, and a photo if you have one. We will suggest a piece or draw one for you.</p>
+            @if (whatsAppUrl is not null)
+            {
+                <div class="btn-row">
+                    <a class="btn btn-dark" href="@whatsAppUrl" target="_blank" rel="noopener noreferrer">Message on WhatsApp <span aria-hidden="true">↗</span></a>
+                </div>
+            }
+        </div>
+        <div class="contact-list">
+            @if (phoneUrl is not null)
+            {
+                <a class="contact-row" href="@phoneUrl">
+                    <span>Phone</span>
+                    <strong>@Model.Phone</strong>
+                </a>
+            }
+            @if (whatsAppUrl is not null)
+            {
+                <a class="contact-row" href="@whatsAppUrl" target="_blank" rel="noopener noreferrer">
+                    <span>WhatsApp</span>
+                    <strong>@Model.WhatsApp</strong>
+                </a>
+            }
+            @if (mailUrl is not null)
+            {
+                <a class="contact-row" href="@mailUrl">
+                    <span>Email</span>
+                    <strong>@Model.Email</strong>
+                </a>
+            }
+            @if (!string.IsNullOrWhiteSpace(Model.Address))
+            {
+                @if (mapsUrl is not null)
+                {
+                    <a class="contact-row" href="@mapsUrl" target="_blank" rel="noopener noreferrer">
+                        <span>Address · Open in Google Maps</span>
+                        <strong>@Model.Address</strong>
+                    </a>
+                }
+                else
+                {
+                    <div class="contact-row">
+                        <span>Address</span>
+                        <strong>@Model.Address</strong>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>

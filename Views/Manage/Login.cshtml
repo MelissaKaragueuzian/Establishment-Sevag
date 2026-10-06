@@ -1,0 +1,23 @@
+@model LoginViewModel
+@{
+    Layout = "_ManageLayout";
+    var company = ViewData["Company"] as CompanyInfo ?? CompanyInfo.CreateDefault();
+}
+<div class="login-card">
+    <a class="brand" asp-controller="Home" asp-action="Index">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>@company.CompanyName</span>
+    </a>
+    <h1>Management</h1>
+    <p class="lede">Enter the workshop password to update the showroom.</p>
+    <form method="post" asp-antiforgery="true">
+        <div asp-validation-summary="ModelOnly" class="form-errors"></div>
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div class="field">
+            <label asp-for="Pin"></label>
+            <input asp-for="Pin" autocomplete="current-password" autofocus />
+            <span asp-validation-for="Pin" class="field-error"></span>
+        </div>
+        <button class="btn btn-bronze" type="submit">Enter</button>
+    </form>
+</div>

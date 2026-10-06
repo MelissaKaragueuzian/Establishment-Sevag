@@ -1,0 +1,53 @@
+@{
+    var company = ViewData["Company"] as CompanyInfo ?? CompanyInfo.CreateDefault();
+    var title = ViewData["Title"] as string;
+    var pageTitle = string.IsNullOrWhiteSpace(title) ? "Manage" : $"{title} · Manage";
+    var signedIn = User.Identity?.IsAuthenticated == true;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#1e1a16" />
+    <title>@pageTitle</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <link rel="icon" href="~/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body class="manage">
+    @if (signedIn)
+    {
+        <header class="manage-bar">
+            <a class="manage-brand" asp-controller="Home" asp-action="Index">@company.CompanyName</a>
+            <nav class="manage-nav">
+                <a asp-action="Index">Overview</a>
+                <a asp-action="HomePage">Home page</a>
+                <a asp-action="AboutPage">About page</a>
+                <a asp-action="Products">Products</a>
+                <a asp-action="Gallery">Gallery</a>
+                <a asp-action="Company">Company</a>
+                <a asp-controller="Home" asp-action="Index">View site</a>
+            </nav>
+            <form method="post" asp-action="Logout">
+                <button type="submit" class="btn btn-light btn-small">Sign out</button>
+            </form>
+        </header>
+    }
+    <main id="content" class="manage-shell @(signedIn ? null : "manage-shell-plain")">
+        @if (TempData["Status"] is string status)
+        {
+            <p class="status-banner" role="status">@status</p>
+        }
+        @if (TempData["Error"] is string error)
+        {
+            <p class="status-banner is-error" role="alert">@error</p>
+        }
+        @RenderBody()
+    </main>
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+</body>
+</html>

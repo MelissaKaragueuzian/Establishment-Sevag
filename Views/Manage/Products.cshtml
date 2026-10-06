@@ -1,0 +1,46 @@
+@model IReadOnlyList<Product>
+@{
+    Layout = "_ManageLayout";
+}
+<div class="page-head">
+    <div>
+        <p class="kicker">Showroom</p>
+        <h1>Products</h1>
+    </div>
+    <a class="btn btn-bronze" asp-action="CreateProduct">Add product</a>
+</div>
+@if (Model.Count == 0)
+{
+    <p class="muted">No products yet. Add the first piece to publish it on the site.</p>
+}
+else
+{
+    <div class="admin-list">
+        @foreach (var product in Model)
+        {
+            var image = product.Images.OrderBy(i => i.Id).FirstOrDefault();
+            <article class="admin-row">
+                <div class="admin-thumb">
+                    @if (image is null)
+                    {
+                        <div class="photo-fallback"><span>@product.Category</span></div>
+                    }
+                    else
+                    {
+                        <img src="@image.ImagePath" alt="" />
+                    }
+                </div>
+                <div>
+                    <h2>@product.Name</h2>
+                    <p class="muted">@product.Category@(product.IsFeatured ? " · Home page" : "")</p>
+                </div>
+                <div class="admin-actions">
+                    <a asp-action="EditProduct" asp-route-id="@product.Id">Edit</a>
+                    <form method="post" asp-action="DeleteProduct" asp-route-id="@product.Id" data-confirm="Remove this piece from the showroom?">
+                        <button type="submit" class="link-danger">Delete</button>
+                    </form>
+                </div>
+            </article>
+        }
+    </div>
+}

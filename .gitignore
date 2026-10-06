@@ -1,0 +1,9 @@
+bin/
+obj/
+.vs/
+*.user
+wwwroot/uploads/**
+!wwwroot/uploads/.gitkeep
+!wwwroot/uploads/products/.gitkeep
+!wwwroot/uploads/gallery/.gitkeep
+appsettings.*.local.json

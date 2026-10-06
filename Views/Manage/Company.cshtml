@@ -1,0 +1,57 @@
+@model CompanyFormViewModel
+@{
+    Layout = "_ManageLayout";
+}
+<div class="page-head">
+    <div>
+        <p class="kicker">Public site</p>
+        <h1>Company information</h1>
+    </div>
+</div>
+<p class="lede">This is the name, contact information, and introduction shown across the website.</p>
+<form class="form-card" method="post" asp-antiforgery="true">
+    <div asp-validation-summary="ModelOnly" class="form-errors"></div>
+    <div class="field">
+        <label asp-for="CompanyName"></label>
+        <input asp-for="CompanyName" />
+        <span asp-validation-for="CompanyName" class="field-error"></span>
+    </div>
+    <div class="field-row">
+        <div class="field">
+            <label asp-for="Phone"></label>
+            <input asp-for="Phone" />
+            <span asp-validation-for="Phone" class="field-error"></span>
+            <p class="hint">Shown on the site and used for the call button.</p>
+        </div>
+        <div class="field">
+            <label asp-for="WhatsApp"></label>
+            <input asp-for="WhatsApp" placeholder="+1 000 555 0148" />
+            <span asp-validation-for="WhatsApp" class="field-error"></span>
+            <p class="hint">Include the country code. Spaces are fine.</p>
+        </div>
+    </div>
+    <div class="field">
+        <label asp-for="Email"></label>
+        <input asp-for="Email" />
+        <span asp-validation-for="Email" class="field-error"></span>
+    </div>
+    <div class="field">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" />
+        <span asp-validation-for="Address" class="field-error"></span>
+        <p class="hint">The map on the Location page is placed from this address.</p>
+    </div>
+    <div class="field">
+        <label asp-for="GoogleMapsUrl"></label>
+        <input asp-for="GoogleMapsUrl" placeholder="https://maps.google.com/..." />
+        <span asp-validation-for="GoogleMapsUrl" class="field-error"></span>
+        <p class="hint">Used by the Open in Google Maps button. Paste the link from Google Maps.</p>
+    </div>
+    <div class="field">
+        <label asp-for="AboutDescription"></label>
+        <textarea asp-for="AboutDescription" rows="8"></textarea>
+        <span asp-validation-for="AboutDescription" class="field-error"></span>
+        <p class="hint">Shown on the home page and the About page. Line breaks are kept.</p>
+    </div>
+    <button class="btn btn-bronze" type="submit">Save company information</button>
+</form>
