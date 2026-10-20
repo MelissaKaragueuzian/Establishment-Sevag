@@ -4,6 +4,7 @@
     var whatsAppUrl = ContactLinks.WhatsApp(Model.Company.WhatsApp, inquiry);
     var spotlight = Model.Spotlight;
     var features = Model.Company.HeroFeatureList;
+    var defaultLamp = Model.Company.HeroLampOffPath is null && Model.Company.HeroLampOnPath is null;
 }
 <section class="home-hero">
     <div class="wrap home-hero-grid">
@@ -29,10 +30,42 @@
         </div>
 
         <figure class="showcase">
-            <div class="showcase-frame">
-                <img src="@(Model.HeroImage ?? Url.Content("~/images/seed/hero.svg"))"
-                     alt="@(spotlight?.Name ?? "A bronze and crystal chandelier")"
-                     fetchpriority="high" />
+            <div class="showcase-frame @(Model.HeroImage is null ? "chandelier-stage" : null)">
+                @if (Model.HeroImage is not null)
+                {
+                    <img src="@Model.HeroImage"
+                         alt="@(spotlight?.Name ?? "A bronze and crystal chandelier")"
+                         fetchpriority="high" />
+                }
+                else
+                {
+                    <span class="stage-glow" aria-hidden="true"></span>
+                    <div class="chandelier-drop">
+                        <div class="chandelier-swing">
+                            <img class="chandelier-img chandelier-off"
+                                 src="@Model.Company.HeroLampOffOrDefault"
+                                 alt=""
+                                 width="@(defaultLamp ? 724 : null)" height="@(defaultLamp ? 819 : null)"
+                                 fetchpriority="high" />
+                            <img class="chandelier-img chandelier-on"
+                                 src="@Model.Company.HeroLampOnOrDefault"
+                                 alt="A bronze and crystal chandelier with its candle lights on"
+                                 width="@(defaultLamp ? 724 : null)" height="@(defaultLamp ? 819 : null)"
+                                 fetchpriority="high" />
+                            @if (defaultLamp)
+                            {
+                                foreach (var (x, y, delay) in Bulbs)
+                                {
+                                    <span class="bulb" style="--x: @x%; --y: @y%; --delay: @delay" aria-hidden="true"></span>
+                                }
+                                foreach (var (x, y, delay) in Sparkles)
+                                {
+                                    <span class="sparkle" style="--x: @x%; --y: @y%; --delay: @delay" aria-hidden="true"></span>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
                 <p class="showcase-badge"><small>Atelier</small>@Model.Company.CompanyName</p>
                 @if (spotlight is not null)
                 {
@@ -50,35 +83,68 @@
     </div>
 </section>
 
-<section class="section collections">
-    <div class="wrap">
-        <div class="collections-head">
-            <div>
-                <p class="kicker">@Model.Company.CollectionKickerOrDefault</p>
-                <h2>@Model.Company.CollectionTitleOrDefault</h2>
-                <p class="lede">@Model.Company.CollectionTextOrDefault</p>
+@if (Model.Featured.Count == 0)
+{
+    <section class="section collections">
+        <div class="wrap">
+            <div class="collections-head">
+                <div>
+                    <p class="kicker">@Model.Company.CollectionKickerOrDefault</p>
+                    <h2>@Model.Company.CollectionTitleOrDefault</h2>
+                    <p class="lede">@Model.Company.CollectionTextOrDefault</p>
+                </div>
+                <a class="collections-link" asp-controller="Products" asp-action="Index">All products</a>
             </div>
-            <a class="collections-link" asp-controller="Products" asp-action="Index">All products</a>
-        </div>
-        @if (Model.Featured.Count == 0)
-        {
             <p class="muted">The collection will appear here once pieces are added.</p>
-        }
-        else
-        {
-            <div class="collection-grid">
-                @for (var i = 0; i < Model.Featured.Count; i++)
-                {
-                    <partial name="_ProductCard"
-                             model="Model.Featured[i]"
-                             view-data='new ViewDataDictionary(ViewData) { ["CardLabel"] = $"Collection {Roman(i + 1)}" }' />
-                }
+        </div>
+    </section>
+}
+else
+{
+    <section class="collections hscroll" data-hscroll aria-label="@Model.Company.CollectionTitleOrDefault">
+        <div class="hscroll-pin">
+            <div class="hscroll-viewport" data-hscroll-viewport>
+                <div class="hscroll-track" data-hscroll-track>
+                    <div class="hscroll-intro">
+                        <p class="kicker">@Model.Company.CollectionKickerOrDefault</p>
+                        <h2>@Model.Company.CollectionTitleOrDefault</h2>
+                        <p class="lede">@Model.Company.CollectionTextOrDefault</p>
+                        <p class="hscroll-hint" aria-hidden="true"><span></span>Scroll to explore</p>
+                    </div>
+                    @for (var i = 0; i < Model.Featured.Count; i++)
+                    {
+                        <partial name="_ProductCard"
+                                 model="Model.Featured[i]"
+                                 view-data='new ViewDataDictionary(ViewData) { ["CardLabel"] = $"Collection {Roman(i + 1)}" }' />
+                    }
+                    <a class="hscroll-end" asp-controller="Products" asp-action="Index">
+                        <span class="kicker">The full collection</span>
+                        <span class="hscroll-end-title">See every piece</span>
+                        <span class="collections-link">All products</span>
+                    </a>
+                </div>
             </div>
-        }
-    </div>
-</section>
+            <div class="hscroll-progress" aria-hidden="true">
+                <span class="hscroll-count"><span data-hscroll-current>01</span> / @Model.Featured.Count.ToString("00")</span>
+                <span class="hscroll-bar"><span data-hscroll-bar></span></span>
+            </div>
+        </div>
+    </section>
+}
 
 @functions {
+    private static readonly (int X, int Y, string Delay)[] Bulbs =
+    [
+        (16, 31, "2.0s"), (28, 28, "2.15s"), (33, 21, "2.3s"), (53, 28, "2.45s"),
+        (67, 23, "2.6s"), (80, 32, "2.75s"), (86, 37, "2.9s")
+    ];
+
+    private static readonly (int X, int Y, string Delay)[] Sparkles =
+    [
+        (40, 46, "4.2s"), (77, 51, "5.1s"), (10, 58, "4.7s"), (54, 64, "5.6s"),
+        (31, 65, "6.3s"), (27, 74, "6.8s"), (79, 79, "5.9s"), (52, 67, "7.2s")
+    ];
+
     private static string Roman(int number)
     {
         var values = new[] { 10, 9, 5, 4, 1 };

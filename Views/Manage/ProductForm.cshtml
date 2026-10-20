@@ -70,6 +70,42 @@
         <p class="hint">JPG, PNG, WEBP, or GIF. You can select more than one. Up to 8 MB each.</p>
         <span asp-validation-for="NewImages" class="field-error"></span>
     </div>
+    @if (!string.IsNullOrEmpty(Model.ExistingVideo))
+    {
+        <fieldset class="field">
+            <legend>Current 360° video</legend>
+            <video class="video-edit" src="@Model.ExistingVideo" controls muted playsinline preload="metadata"></video>
+            <input type="hidden" asp-for="ExistingVideo" />
+            <label class="check">
+                <input asp-for="RemoveVideo" />
+                <span>@Html.DisplayNameFor(m => m.RemoveVideo)</span>
+            </label>
+        </fieldset>
+    }
+    <div class="field">
+        <label for="NewVideo">@(string.IsNullOrEmpty(Model.ExistingVideo) ? "360° video" : "Replace the 360° video")</label>
+        <input id="NewVideo" name="NewVideo" type="file" accept="video/mp4,video/webm" />
+        <p class="hint">Optional. An MP4 or WEBM video of the piece turning, up to 100 MB. It plays when a visitor clicks the product photo.</p>
+        <span asp-validation-for="NewVideo" class="field-error"></span>
+    </div>
+    @if (!string.IsNullOrEmpty(Model.ExistingModel))
+    {
+        <fieldset class="field">
+            <legend>Current 3D model</legend>
+            <p><a href="@Model.ExistingModel" target="_blank" rel="noopener">Download the current GLB file</a></p>
+            <input type="hidden" asp-for="ExistingModel" />
+            <label class="check">
+                <input asp-for="RemoveModel" />
+                <span>@Html.DisplayNameFor(m => m.RemoveModel)</span>
+            </label>
+        </fieldset>
+    }
+    <div class="field">
+        <label for="NewModel">@(string.IsNullOrEmpty(Model.ExistingModel) ? "3D model" : "Replace the 3D model")</label>
+        <input id="NewModel" name="NewModel" type="file" accept=".glb,model/gltf-binary" />
+        <p class="hint">Optional. A GLB file up to 60 MB. Visitors can turn it all the way around and zoom in. You can make one from photos with an image-to-3D tool (for example Meshy, Tripo, or Luma) or a phone 3D-scan app (for example Polycam or KIRI Engine), then export as GLB. Without a model, the photo turns in 3D automatically.</p>
+        <span asp-validation-for="NewModel" class="field-error"></span>
+    </div>
     <div class="btn-row">
         <button class="btn btn-bronze" type="submit">Save product</button>
         <a class="btn btn-ghost" asp-action="Products">Cancel</a>

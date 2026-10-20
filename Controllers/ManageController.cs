@@ -100,7 +100,7 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
 
     [HttpPost("products/new")]
     [ValidateAntiForgeryToken]
-    [RequestSizeLimit(40 * 1024 * 1024)]
+    [RequestSizeLimit(160 * 1024 * 1024)]
     public async Task<IActionResult> CreateProduct(ProductFormViewModel model)
     {
         ViewData["Title"] = "Add a product";
@@ -114,6 +114,16 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
         if (!await TryStoreImagesAsync(product, files))
             return View("ProductForm", model);
 
+        var media = await TryStoreMediaAsync(model);
+        if (media is null)
+        {
+            foreach (var image in product.Images)
+                images.Delete(image.ImagePath);
+            return View("ProductForm", model);
+        }
+
+        product.VideoPath = media.Value.Video;
+        product.ModelPath = media.Value.Model;
         db.Products.Add(product);
         try
         {
@@ -123,6 +133,8 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
         {
             foreach (var image in product.Images)
                 images.Delete(image.ImagePath);
+            images.Delete(product.VideoPath);
+            images.Delete(product.ModelPath);
             throw;
         }
 
@@ -143,7 +155,7 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
 
     [HttpPost("products/{id:int}/edit")]
     [ValidateAntiForgeryToken]
-    [RequestSizeLimit(40 * 1024 * 1024)]
+    [RequestSizeLimit(160 * 1024 * 1024)]
     public async Task<IActionResult> EditProduct(int id, ProductFormViewModel model)
     {
         ViewData["Title"] = "Edit product";
@@ -154,11 +166,7 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
         var files = SelectedFiles(model);
         await ValidateProductAsync(model, files);
         if (!ModelState.IsValid)
-        {
-            model.Id = id;
-            model.ExistingImages = product.Images.OrderBy(i => i.Id).ToList();
-            return View("ProductForm", model);
-        }
+            return RedisplayEdit(id, model, product);
 
         var removeIds = model.RemoveImageIds ?? [];
         var removing = product.Images.Where(i => removeIds.Contains(i.Id)).ToList();
@@ -174,16 +182,32 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
                 images.Delete(path);
 
             ModelState.AddModelError(nameof(model.NewImages), ex.Message);
-            model.Id = id;
-            model.ExistingImages = product.Images.OrderBy(i => i.Id).ToList();
-            return View("ProductForm", model);
+            return RedisplayEdit(id, model, product);
         }
 
+        var media = await TryStoreMediaAsync(model);
+        if (media is null)
+        {
+            foreach (var path in stored)
+                images.Delete(path);
+            return RedisplayEdit(id, model, product);
+        }
+
+        var oldVideo = product.VideoPath;
+        var oldModel = product.ModelPath;
         Apply(product, model);
         foreach (var image in removing)
             product.Images.Remove(image);
         foreach (var path in stored)
             product.Images.Add(new ProductImage { ImagePath = path });
+        if (media.Value.Video is not null)
+            product.VideoPath = media.Value.Video;
+        else if (model.RemoveVideo)
+            product.VideoPath = null;
+        if (media.Value.Model is not null)
+            product.ModelPath = media.Value.Model;
+        else if (model.RemoveModel)
+            product.ModelPath = null;
 
         try
         {
@@ -193,11 +217,17 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
         {
             foreach (var path in stored)
                 images.Delete(path);
+            images.Delete(media.Value.Video);
+            images.Delete(media.Value.Model);
             throw;
         }
 
         foreach (var image in removing)
             images.Delete(image.ImagePath);
+        if (oldVideo is not null && oldVideo != product.VideoPath)
+            images.Delete(oldVideo);
+        if (oldModel is not null && oldModel != product.ModelPath)
+            images.Delete(oldModel);
 
         TempData["Status"] = "The product was updated.";
         return RedirectToAction(nameof(Products));
@@ -212,10 +242,14 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
             return Missing();
 
         var paths = product.Images.Select(i => i.ImagePath).ToList();
+        var videoPath = product.VideoPath;
+        var modelPath = product.ModelPath;
         db.Products.Remove(product);
         await db.SaveChangesAsync();
         foreach (var path in paths)
             images.Delete(path);
+        images.Delete(videoPath);
+        images.Delete(modelPath);
 
         TempData["Status"] = "The product was removed.";
         return RedirectToAction(nameof(Products));
@@ -427,39 +461,59 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
         ViewData["Title"] = "Home page";
         var company = await GetCompanyAsync();
 
-        if (model.HeroImage is { Length: > 0 } && images.Validate(model.HeroImage) is { } problem)
-            ModelState.AddModelError(nameof(model.HeroImage), problem);
+        var uploads = new (IFormFile? File, string Field)[]
+        {
+            (model.HeroImage, nameof(model.HeroImage)),
+            (model.HeroLampOff, nameof(model.HeroLampOff)),
+            (model.HeroLampOn, nameof(model.HeroLampOn))
+        };
+        foreach (var (file, field) in uploads)
+        {
+            if (file is { Length: > 0 } && images.Validate(file) is { } problem)
+                ModelState.AddModelError(field, problem);
+        }
 
         if (model.HeroProductId is int productId && !await db.Products.AnyAsync(p => p.Id == productId))
             ModelState.AddModelError(nameof(model.HeroProductId), "Choose a piece from the list.");
 
         if (!ModelState.IsValid)
         {
-            model.CurrentImagePath = company.HeroImagePath;
+            model.ShowCurrentImages(company);
             await LoadProductChoicesAsync();
             return View(model);
         }
 
-        var oldImage = company.HeroImagePath;
-        string? stored = null;
-        if (model.HeroImage is { Length: > 0 })
+        var oldImages = new[] { company.HeroImagePath, company.HeroLampOffPath, company.HeroLampOnPath };
+        var stored = new List<string>();
+        async Task<string?> ReplaceAsync(IFormFile? file, bool remove, string? current, string field)
         {
+            if (file is not { Length: > 0 })
+                return remove ? null : current;
+
             try
             {
-                stored = await images.SaveAsync(model.HeroImage, "home");
+                var path = await images.SaveAsync(file, "home");
+                stored.Add(path);
+                return path;
             }
             catch (InvalidOperationException ex)
             {
-                ModelState.AddModelError(nameof(model.HeroImage), ex.Message);
-                model.CurrentImagePath = company.HeroImagePath;
-                await LoadProductChoicesAsync();
-                return View(model);
+                ModelState.AddModelError(field, ex.Message);
+                return current;
             }
-            company.HeroImagePath = stored;
         }
-        else if (model.RemoveHeroImage)
+
+        company.HeroImagePath = await ReplaceAsync(model.HeroImage, model.RemoveHeroImage, company.HeroImagePath, nameof(model.HeroImage));
+        company.HeroLampOffPath = await ReplaceAsync(model.HeroLampOff, model.RemoveHeroLampOff, company.HeroLampOffPath, nameof(model.HeroLampOff));
+        company.HeroLampOnPath = await ReplaceAsync(model.HeroLampOn, model.RemoveHeroLampOn, company.HeroLampOnPath, nameof(model.HeroLampOn));
+
+        if (!ModelState.IsValid)
         {
-            company.HeroImagePath = null;
+            stored.ForEach(images.Delete);
+            db.Entry(company).Reload();
+            model.ShowCurrentImages(company);
+            await LoadProductChoicesAsync();
+            return View(model);
         }
 
         company.HeroBadge = Clean(model.HeroBadge);
@@ -478,13 +532,13 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
         }
         catch
         {
-            if (stored is not null)
-                images.Delete(stored);
+            stored.ForEach(images.Delete);
             throw;
         }
 
-        if (oldImage != company.HeroImagePath)
-            images.Delete(oldImage);
+        var currentImages = new[] { company.HeroImagePath, company.HeroLampOffPath, company.HeroLampOnPath };
+        foreach (var old in oldImages.Where(o => o is not null && !currentImages.Contains(o)))
+            images.Delete(old);
 
         TempData["Status"] = "The home page was saved. The public site is updated.";
         return RedirectToAction(nameof(HomePage));
@@ -617,6 +671,51 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
             if (images.Validate(file) is { } problem)
                 ModelState.AddModelError(nameof(model.NewImages), problem);
         }
+        if (model.NewVideo is { Length: > 0 } video && images.ValidateVideo(video) is { } videoProblem)
+            ModelState.AddModelError(nameof(model.NewVideo), videoProblem);
+
+        if (model.NewModel is { Length: > 0 } model3d && images.ValidateModel(model3d) is { } modelProblem)
+            ModelState.AddModelError(nameof(model.NewModel), modelProblem);
+    }
+
+    // Stores the optional video and 3D model. Returns null, with the problem recorded on the
+    // form, when either file is rejected; nothing new is left on disk in that case.
+    private async Task<(string? Video, string? Model)?> TryStoreMediaAsync(ProductFormViewModel model)
+    {
+        string? video = null;
+        try
+        {
+            if (model.NewVideo is { Length: > 0 } videoFile)
+                video = await images.SaveVideoAsync(videoFile, "products");
+        }
+        catch (InvalidOperationException ex)
+        {
+            ModelState.AddModelError(nameof(model.NewVideo), ex.Message);
+            return null;
+        }
+
+        try
+        {
+            var model3d = model.NewModel is { Length: > 0 } modelFile
+                ? await images.SaveModelAsync(modelFile, "products")
+                : null;
+            return (video, model3d);
+        }
+        catch (InvalidOperationException ex)
+        {
+            images.Delete(video);
+            ModelState.AddModelError(nameof(model.NewModel), ex.Message);
+            return null;
+        }
+    }
+
+    private ViewResult RedisplayEdit(int id, ProductFormViewModel model, Product product)
+    {
+        model.Id = id;
+        model.ExistingImages = product.Photos;
+        model.ExistingVideo = product.VideoPath;
+        model.ExistingModel = product.ModelPath;
+        return View("ProductForm", model);
     }
 
     private async Task<bool> TryStoreImagesAsync(Product product, List<IFormFile> files)
@@ -658,7 +757,9 @@ public class ManageController(AppDbContext db, IImageStorage images, IConfigurat
         Material = product.Material,
         Dimensions = product.Dimensions,
         IsFeatured = product.IsFeatured,
-        ExistingImages = product.Images.OrderBy(i => i.Id).ToList()
+        ExistingImages = product.Photos,
+        ExistingVideo = product.VideoPath,
+        ExistingModel = product.ModelPath
     };
 
     private static void Apply(Product product, ProductFormViewModel model)

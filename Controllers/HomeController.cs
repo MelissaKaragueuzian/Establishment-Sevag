@@ -35,10 +35,6 @@ public class HomeController(AppDbContext db) : Controller
                 .Include(p => p.Images)
                 .FirstOrDefaultAsync(p => p.Id == heroId);
         }
-        else if (company.HeroImagePath is null)
-        {
-            spotlight = featured.FirstOrDefault(p => p.Images.Count > 0);
-        }
 
         return View(new HomeViewModel
         {
@@ -46,7 +42,7 @@ public class HomeController(AppDbContext db) : Controller
             Featured = featured,
             Spotlight = spotlight,
             HeroImage = company.HeroImagePath
-                ?? spotlight?.Images.OrderBy(i => i.Id).FirstOrDefault()?.ImagePath
+                ?? spotlight?.Photos.FirstOrDefault()?.ImagePath
         });
     }
 

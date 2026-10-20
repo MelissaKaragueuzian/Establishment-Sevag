@@ -31,4 +31,18 @@ public class ProductFormViewModel
     public List<ProductImage> ExistingImages { get; set; } = [];
     public List<int> RemoveImageIds { get; set; } = [];
     public List<IFormFile> NewImages { get; set; } = [];
+
+    public string? ExistingVideo { get; set; }
+
+    [Display(Name = "Remove the video")]
+    public bool RemoveVideo { get; set; }
+
+    public IFormFile? NewVideo { get; set; }
+
+    public string? ExistingModel { get; set; }
+
+    [Display(Name = "Remove the 3D model")]
+    public bool RemoveModel { get; set; }
+
+    public IFormFile? NewModel { get; set; }
 }

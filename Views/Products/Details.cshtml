@@ -1,7 +1,10 @@
 @model ProductDetailsViewModel
 @{
-    var images = Model.Product.Images.OrderBy(i => i.Id).ToList();
+    var images = Model.Product.Photos;
     var main = images.FirstOrDefault();
+    var badge = Model.Product.ModelPath is not null ? "Turn it in 3D"
+        : Model.Product.VideoPath is not null ? "Watch the 360° video"
+        : "Watch up close";
 }
 <section class="section">
     <div class="wrap detail">
@@ -14,7 +17,8 @@
                 }
                 else
                 {
-                    <img class="detail-main" data-detail-main src="@main.ImagePath" alt="@Model.Product.Name" />
+                    <img class="detail-main" data-detail-main data-zoom-title="@Model.Product.Name" data-video-src="@Model.Product.VideoPath" data-model-src="@Model.Product.ModelPath" src="@main.ImagePath" alt="@Model.Product.Name" />
+                    <span class="film-badge" aria-hidden="true"><span>▶</span> @badge</span>
                 }
             </div>
             </div>

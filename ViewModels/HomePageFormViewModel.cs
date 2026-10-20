@@ -35,6 +35,33 @@ public class HomePageFormViewModel
 
     public string? CurrentImagePath { get; set; }
 
+    [Display(Name = "Chandelier with the lights off")]
+    public IFormFile? HeroLampOff { get; set; }
+
+    [Display(Name = "Chandelier with the lights on")]
+    public IFormFile? HeroLampOn { get; set; }
+
+    public bool RemoveHeroLampOff { get; set; }
+
+    public bool RemoveHeroLampOn { get; set; }
+
+    public string CurrentLampOffPath { get; set; } = CompanyInfo.DefaultHeroLampOff;
+
+    public string CurrentLampOnPath { get; set; } = CompanyInfo.DefaultHeroLampOn;
+
+    public bool HasCustomLampOff { get; set; }
+
+    public bool HasCustomLampOn { get; set; }
+
+    public void ShowCurrentImages(CompanyInfo company)
+    {
+        CurrentImagePath = company.HeroImagePath;
+        CurrentLampOffPath = company.HeroLampOffOrDefault;
+        CurrentLampOnPath = company.HeroLampOnOrDefault;
+        HasCustomLampOff = company.HeroLampOffPath is not null;
+        HasCustomLampOn = company.HeroLampOnPath is not null;
+    }
+
     [StringLength(80)]
     [Display(Name = "Small label")]
     public string? CollectionKicker { get; set; }
@@ -47,17 +74,21 @@ public class HomePageFormViewModel
     [Display(Name = "Section text")]
     public string? CollectionText { get; set; }
 
-    public static HomePageFormViewModel From(CompanyInfo company) => new()
+    public static HomePageFormViewModel From(CompanyInfo company)
     {
-        CollectionKicker = company.CollectionKickerOrDefault,
-        CollectionTitle = company.CollectionTitleOrDefault,
-        CollectionText = company.CollectionTextOrDefault,
-        HeroBadge = company.HeroBadgeOrDefault,
-        HeroTitle = company.HeroTitleOrDefault,
-        HeroHighlight = company.HeroHighlightOrDefault,
-        HeroText = company.HeroTextOrDefault,
-        HeroFeatures = string.Join("\n", company.HeroFeatureList),
-        HeroProductId = company.HeroProductId,
-        CurrentImagePath = company.HeroImagePath
-    };
+        var model = new HomePageFormViewModel
+        {
+            CollectionKicker = company.CollectionKickerOrDefault,
+            CollectionTitle = company.CollectionTitleOrDefault,
+            CollectionText = company.CollectionTextOrDefault,
+            HeroBadge = company.HeroBadgeOrDefault,
+            HeroTitle = company.HeroTitleOrDefault,
+            HeroHighlight = company.HeroHighlightOrDefault,
+            HeroText = company.HeroTextOrDefault,
+            HeroFeatures = string.Join("\n", company.HeroFeatureList),
+            HeroProductId = company.HeroProductId
+        };
+        model.ShowCurrentImages(company);
+        return model;
+    }
 }

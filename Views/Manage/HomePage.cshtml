@@ -45,17 +45,46 @@
         <span asp-validation-for="HeroFeatures" class="field-error"></span>
     </div>
 
+    <h2>Chandelier animation</h2>
+    <p class="hint">The big picture on the right drops in, swings, and turns its lights on. Upload the same chandelier twice: once with the lights off and once with the lights on. Use transparent PNGs of the same size and framing, so the two pictures line up.</p>
+    @if (Model.CurrentImagePath is not null)
+    {
+        <p class="status-banner is-error">The animation is hidden because a photo is uploaded under “Photo card” below. Tick “Remove this photo” there to show the animation.</p>
+    }
+    <div class="field-row">
+        @foreach (var (field, label, current, custom, remove) in new[]
+        {
+            ("HeroLampOff", "Chandelier with the lights off", Model.CurrentLampOffPath, Model.HasCustomLampOff, "RemoveHeroLampOff"),
+            ("HeroLampOn", "Chandelier with the lights on", Model.CurrentLampOnPath, Model.HasCustomLampOn, "RemoveHeroLampOn")
+        })
+        {
+            <div class="field">
+                <label for="@field">@label</label>
+                <div class="hero-image-current lamp-preview">
+                    <img src="@current" alt="@label" />
+                    @if (custom)
+                    {
+                        <label class="check"><input type="checkbox" id="@remove" name="@remove" value="true" /> <span>Go back to the original picture</span></label>
+                    }
+                </div>
+                <input id="@field" name="@field" type="file" accept="image/png,image/webp,image/jpeg,image/gif" />
+                @Html.ValidationMessage(field, null, new { @class = "field-error" })
+            </div>
+        }
+    </div>
+
     <h2>Photo card</h2>
+    <p class="hint">Optional. A photo here replaces the chandelier animation.</p>
     <div class="field">
         <label asp-for="HeroProductId"></label>
         <select asp-for="HeroProductId">
-            <option value="">Automatic: the first featured piece with a photo</option>
+            <option value="">None</option>
             @foreach (var product in products)
             {
                 <option value="@product.Id">@product.Name@(product.HasImage ? "" : " (no photo)")</option>
             }
         </select>
-        <p class="hint">Its name, category, and description appear on the dark card. Clicking the card opens the piece.</p>
+        <p class="hint">Its name, category, and description appear on the dark card, and its first photo replaces the animation. Clicking the card opens the piece.</p>
         <span asp-validation-for="HeroProductId" class="field-error"></span>
     </div>
     <div class="field">
@@ -64,7 +93,7 @@
         {
             <div class="hero-image-current">
                 <img src="@Model.CurrentImagePath" alt="Current home page photo" />
-                <label class="check"><input type="checkbox" asp-for="RemoveHeroImage" /> <span>Remove this photo and use the piece's own photo</span></label>
+                <label class="check"><input type="checkbox" asp-for="RemoveHeroImage" /> <span>Remove this photo</span></label>
             </div>
         }
         <input id="HeroImage" name="HeroImage" type="file" accept="image/jpeg,image/png,image/webp,image/gif" />

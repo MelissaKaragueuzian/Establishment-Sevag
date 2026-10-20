@@ -18,6 +18,8 @@ public class CompanyInfo
     public string? HeroFeatures { get; set; }
     public string? HeroImagePath { get; set; }
     public int? HeroProductId { get; set; }
+    public string? HeroLampOffPath { get; set; }
+    public string? HeroLampOnPath { get; set; }
 
     public string? CollectionKicker { get; set; }
     public string? CollectionTitle { get; set; }
@@ -29,6 +31,8 @@ public class CompanyInfo
     public const string DefaultHeroText =
         "Discover handcrafted chandeliers where traditional craftsmanship meets refined design. From bronze details to brilliant crystal, each piece is carefully created to bring warmth, character, and elegance to your space.";
     public const string DefaultHeroFeatures = "Bespoke commissions\nCast bronze\nHand-cut crystal";
+    public const string DefaultHeroLampOff = "/images/hero-chandelier-off.webp";
+    public const string DefaultHeroLampOn = "/images/hero-chandelier-on.webp";
 
     public const string DefaultCollectionKicker = "Curated folio";
     public const string DefaultCollectionTitle = "Signature Atelier Collections";
@@ -43,6 +47,8 @@ public class CompanyInfo
     public string HeroTitleOrDefault => HeroTitle ?? DefaultHeroTitle;
     public string HeroHighlightOrDefault => HeroHighlight ?? DefaultHeroHighlight;
     public string HeroTextOrDefault => HeroText ?? DefaultHeroText;
+    public string HeroLampOffOrDefault => HeroLampOffPath ?? DefaultHeroLampOff;
+    public string HeroLampOnOrDefault => HeroLampOnPath ?? DefaultHeroLampOn;
 
     public IReadOnlyList<string> HeroFeatureList =>
         (HeroFeatures ?? DefaultHeroFeatures).Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);

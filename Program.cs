@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Website_Idea.Data;
 using Website_Idea.Filters;
@@ -8,7 +9,7 @@ using Website_Idea.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-const long uploadLimit = 40 * 1024 * 1024;
+const long uploadLimit = 160 * 1024 * 1024;
 builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = uploadLimit);
 builder.Services.Configure<FormOptions>(options => options.MultipartBodyLengthLimit = uploadLimit);
 builder.Services.Configure<IISServerOptions>(options => options.MaxRequestBodySize = uploadLimit);
@@ -61,7 +62,9 @@ else
     app.UseHttpsRedirection();
 }
 
-app.UseStaticFiles();
+var contentTypes = new FileExtensionContentTypeProvider();
+contentTypes.Mappings[".glb"] = "model/gltf-binary";
+app.UseStaticFiles(new StaticFileOptions { ContentTypeProvider = contentTypes });
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();

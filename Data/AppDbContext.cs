@@ -30,6 +30,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(p => p.Category).HasMaxLength(80).IsRequired();
             entity.Property(p => p.Material).HasMaxLength(200);
             entity.Property(p => p.Dimensions).HasMaxLength(200);
+            entity.Property(p => p.VideoPath).HasMaxLength(400);
+            entity.Property(p => p.ModelPath).HasMaxLength(400);
             entity.HasMany(p => p.Images)
                 .WithOne(i => i.Product)
                 .HasForeignKey(i => i.ProductId)
@@ -63,6 +65,8 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             entity.Property(c => c.HeroText).HasMaxLength(1000);
             entity.Property(c => c.HeroFeatures).HasMaxLength(400);
             entity.Property(c => c.HeroImagePath).HasMaxLength(400);
+            entity.Property(c => c.HeroLampOffPath).HasMaxLength(400);
+            entity.Property(c => c.HeroLampOnPath).HasMaxLength(400);
             entity.Property(c => c.CollectionKicker).HasMaxLength(80);
             entity.Property(c => c.CollectionTitle).HasMaxLength(160);
             entity.Property(c => c.CollectionText).HasMaxLength(1000);

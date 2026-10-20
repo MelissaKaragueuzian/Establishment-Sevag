@@ -1,11 +1,11 @@
 @model Product
 @{
-    var image = Model.Images.OrderBy(i => i.Id).FirstOrDefault();
+    var image = Model.Photos.FirstOrDefault();
     var label = ViewData["CardLabel"] as string;
     var hasDimensions = !string.IsNullOrWhiteSpace(Model.Dimensions);
 }
 <a class="collection-card" asp-controller="Products" asp-action="Details" asp-route-id="@Model.Id">
-    <div class="collection-media">
+    <div class="collection-media" data-zoom-src="@image?.ImagePath" data-zoom-title="@Model.Name">
         @if (image is null)
         {
             <div class="photo-fallback"><span>@Model.Category</span></div>
@@ -13,10 +13,9 @@
         else
         {
             <img src="@image.ImagePath" alt="@Model.Name" loading="lazy" />
-        }
-        @if (!string.IsNullOrWhiteSpace(Model.Material))
-        {
-            <span class="collection-tag">@Model.Material</span>
+            <span class="zoom-badge" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.5 15.5 21 21M10.5 7.5v6M7.5 10.5h6" /></svg>
+            </span>
         }
         @if (label is not null || hasDimensions)
         {

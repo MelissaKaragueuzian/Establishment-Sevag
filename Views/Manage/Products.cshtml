@@ -18,7 +18,7 @@ else
     <div class="admin-list">
         @foreach (var product in Model)
         {
-            var image = product.Images.OrderBy(i => i.Id).FirstOrDefault();
+            var image = product.Photos.FirstOrDefault();
             <article class="admin-row">
                 <div class="admin-thumb">
                     @if (image is null)
